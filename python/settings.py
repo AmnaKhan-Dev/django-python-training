@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'MVT',
+    'MVT', #our app
+    'rest_framework', #Builds REST APIs in Django (JSON endpoints).
+                      #Provides viewsets, serializers, routers, and request/response handling.
+                      #Used in the MVT app to create RESTful APIs for the models.
 ]
 
 MIDDLEWARE = [
