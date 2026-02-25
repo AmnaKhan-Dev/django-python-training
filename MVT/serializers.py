@@ -20,3 +20,12 @@ class BooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = Books
         fields = '__all__'
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+class SignupSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
