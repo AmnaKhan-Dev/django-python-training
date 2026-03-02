@@ -164,13 +164,18 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-
-    # 🔥 Add throttling
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.UserRateThrottle',
+        'MVT.utils.OrganizationRateThrottle',
     ],
+    'DEFAULT_THROTTLE_RATES': {  # <-- colon, not equals, no starting quote
+        'user': '1000/day',
+        'anon': '100/day',
+        'organization': '10/minute',  # dummy default rate for DRF
+    },
+}
 
-    'DEFAULT_THROTTLE_RATES': {
-        'user': '3/minute',   # only 3 requests per minute per user
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }

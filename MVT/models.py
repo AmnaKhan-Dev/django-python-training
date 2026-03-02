@@ -1,6 +1,8 @@
 from django.db import models
 from .custom_fields import FiveDigitCodeField
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.conf import settings
 # Create your models here.
 
 
@@ -48,3 +50,20 @@ class Books(models.Model):
         return f"{self.title} by {self.author.name}"
     
 
+
+class Organization(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    max_requests = models.PositiveIntegerField(default=10)  # max requests allowed
+    time_window = models.PositiveIntegerField(default=300)  # time window in seconds
+
+    def __str__(self):
+        return self.name
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"{self.user.username} Profile"

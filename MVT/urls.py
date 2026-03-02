@@ -1,12 +1,14 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import AuthorViewSet, AuthorBioViewSet, GenreViewSet, BooksViewSet, author_list_view , LoginAPIView,SignupAPIView, contact_view
+from .views import AuthorViewSet, AuthorBioViewSet, GenreViewSet, BooksViewSet, author_list_view , LoginAPIView,SignupAPIView, contact_view, OrganizationViewSet, UserProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'authors', AuthorViewSet)
 router.register(r'author-bios', AuthorBioViewSet)
 router.register(r'genres', GenreViewSet)
 router.register(r'books', BooksViewSet)
+router.register(r'organizations', OrganizationViewSet)
+router.register(r'userprofiles', UserProfileViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),  # all DRF endpoints

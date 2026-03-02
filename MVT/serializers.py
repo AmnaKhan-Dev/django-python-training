@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Author, AuthorBio, Genre, Books
+from .models import Author, AuthorBio, Genre, Books , Organization, UserProfile
 
 class AuthorSerializer(serializers.ModelSerializer):#this is a serializer for the Author model
     class Meta: # nested class that defines the model and fields that will be serialized
@@ -29,3 +29,13 @@ class LoginSerializer(serializers.Serializer):
 class SignupSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'

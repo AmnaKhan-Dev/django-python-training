@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Author, AuthorBio, Genre, Books
-from .serializers import AuthorSerializer, AuthorBioSerializer, GenreSerializer, BooksSerializer
+from .models import Author, AuthorBio, Genre, Books , Organization, UserProfile
+from .serializers import AuthorSerializer, AuthorBioSerializer, GenreSerializer, BooksSerializer , OrganizationSerializer, UserProfileSerializer
+from rest_framework.permissions import IsAuthenticated
+from .utils import OrganizationRateThrottle
 
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
@@ -98,6 +100,29 @@ class BooksViewSet(viewsets.ModelViewSet):
 # Create your views here.
 
 
+class OrganizationViewSet(viewsets.ModelViewSet):
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()  # required by DRF router
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [OrganizationRateThrottle]
+
+
+#to show organization specific user profiles
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            org = user.userprofile.organization
+        except UserProfile.DoesNotExist:
+            return UserProfile.objects.none()  # no profile? return empty
+
+        return UserProfile.objects.filter(organization=org)
+
+
+
 def author_list_view(request): #This function is a normal Django view that renders a template and passes the data to it
     authors = Author.objects.all()  #Get data from the database
     return render(request, "authors/author_list.html", {"authors": authors}) 
@@ -109,3 +134,5 @@ def contact_view(request):
     if form.is_valid():
         print(form.cleaned_data)  # validated data
     return render(request, "contact.html", {"form": form})
+
+
