@@ -13,6 +13,8 @@ from .serializers import LoginSerializer
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from .pagination import BooksPagination, AuthorsPagination, GenrePagination, BooksCursorPagination
+
 
 from django.shortcuts import render
 from .forms import ContactForm
@@ -97,6 +99,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 class BooksViewSet(viewsets.ModelViewSet):
     queryset = Books.objects.select_related('author').prefetch_related('genres')
     serializer_class = BooksSerializer
+    pagination_class = BooksPagination #pagination class is used to paginate the books
 # Create your views here.
 
 
