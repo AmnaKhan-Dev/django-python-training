@@ -16,7 +16,7 @@ class LoginRateLimitMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path == "/api/login/" and request.method == "POST":           # this is the path and method we want to apply rate limiting to - Only apply rate limiting to POST /api/login/
+        if request.path == "/api/login/" and request.method == "POST":  # this is the path and method we want to apply rate limiting to - Only apply rate limiting to POST /api/login/
 
             ip = self.get_client_ip(request)  # get client IP
             now = time.time()

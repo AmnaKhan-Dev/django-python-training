@@ -37,7 +37,7 @@ class  Genre(models.Model):
 # That’s why it’s called Many-to-Many.
 
 
-# one to many relationship
+# one to many relationship - 
 class Books(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE) #this shows a drop down menu of the authors in the database

@@ -93,7 +93,7 @@ class GenreViewSet(viewsets.ModelViewSet):
     serializer_class = GenreSerializer
 
 class BooksViewSet(viewsets.ModelViewSet):
-    queryset = Books.objects.all()
+    queryset = Books.objects.select_related('author').prefetch_related('genres')
     serializer_class = BooksSerializer
 # Create your views here.
 
