@@ -177,4 +177,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+
+        'MVT.utils.OrganizationRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {  # <-- colon, not equals, no starting quote
+        'user': '1000/day',
+        'anon': '100/day',
+        'organization': '10/minute',  # dummy default rate for DRF
+    },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
 }
