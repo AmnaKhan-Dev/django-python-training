@@ -20,6 +20,12 @@ from django.shortcuts import render
 from .forms import ContactForm
 
 
+# Simple i18n/l10n test view
+from django.utils.translation import gettext as _
+from django.utils import translation
+from django.http import JsonResponse
+
+
 import logging
 
 logger = logging.getLogger(__name__) #This is a logger object that will be used to log messages to the console
@@ -138,4 +144,32 @@ def contact_view(request):
         print(form.cleaned_data)  # validated data
     return render(request, "contact.html", {"form": form})
 
+
+
+
+def i18n_test_view(request):
+    """
+    Simple view to test internationalization and localization.
+    Access with ?lang=en, ?lang=es, or ?lang=fr
+    """
+    # 1) Read language from query string and ACTIVATE it
+    lang = request.GET.get("lang", "en")
+    if lang in ["en", "es", "fr"]:
+        translation.activate(lang)
+
+    # 2) Now _() will use the active language
+    messages = {
+        "welcome": _("Welcome to our website!"),
+        "greeting": _("Hello, how are you?"),
+        "goodbye":  _("Goodbye!"),
+        "current_language": _("Current language"),
+    }
+
+    current_lang = translation.get_language()
+
+    return JsonResponse({
+        "messages": messages,
+        "current_language": current_lang,
+        "note": "Change language with ?lang=es or ?lang=fr",
+    })
 
