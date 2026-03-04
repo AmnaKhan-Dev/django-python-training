@@ -46,7 +46,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-   # 'MVT.middleware.LoginRateLimitMiddleware',    #Activating a middleware & order/layering (order is important)
+    'django.middleware.locale.LocaleMiddleware',  # Must be after SessionMiddleware, before CommonMiddleware
+    #'MVT.middleware.LoginRateLimitMiddleware',    #Activating a middleware & order/layering (order is important)
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -109,6 +110,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+# Supported languages for translation
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Spanish'),
+    ('fr', 'French'),
+]
+
+# Where to find translation files
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -164,18 +177,4 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_THROTTLE_CLASSES': [
-        'MVT.utils.OrganizationRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {  # <-- colon, not equals, no starting quote
-        'user': '1000/day',
-        'anon': '100/day',
-        'organization': '10/minute',  # dummy default rate for DRF
-    },
-}
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
 }
